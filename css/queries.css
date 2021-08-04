@@ -41,20 +41,22 @@
 }
 
 @media only screen and (max-width: 768px) {
-    .main-container { margin: 10rem 0 0 15%; padding: 5rem 0 10rem 4rem; }
+    html { font-size: 47%; }
+    .main-container { margin: 10rem 0 0 15%; padding: 5rem 0 10rem 4rem; width: 52%; }
     table tr td { padding: 1px .9rem; font-size: 1.7rem; }
-    .select-teams { margin-top: 12rem; padding-left: 1rem; }
+    .select-teams { margin: 12rem 0 0 -2rem; padding-left: 0rem; }
     .select-teams > select { padding: 0.8rem; }
     #team-local, #team-visitor { font-size: 1.5rem; width: 35%; }
-    .buttons { margin-left: 33%; }
+    .buttons { margin: 3rem 0 0 33%; width: 22%; }
+    .GF, .GA, .GD { display: none; }
 }
 
 @media only screen and (max-width: 730px) {
-    html { font-size: 43.5%; }
+    html { font-size: 45.5%; }
 }
 
 @media only screen and (max-width: 700px) {
-    html { font-size: 41.5%; }
+    html { font-size: 43.5% }
 }
 
 @media only screen and (max-width: 680px) {
@@ -66,29 +68,38 @@
 }
 
 @media only screen and (max-width: 620px) {
-    html { font-size: 36.5%; }
+    html { font-size: 38.5%; }
 }
 
 @media only screen and (max-width: 600px) {
-    html { font-size: 34.5%; }
+    html { font-size: 46.5%; }
+    .select-teams { margin: 12rem 0 0 0rem; }
     .select-teams > select { padding: 0.6rem; }
     .select-teams > input { width: 4rem; padding: .1rem 0; }
-    .buttons { margin-left: 31%; }
+    #team-local, #team-visitor { font-size: 1.2rem; width: 32%; }
+    .buttons { margin-left: 35%; width: 20%; }
     #btn-play { padding: .3rem .1rem; }
+    .W, .D, .L { display: none; }
+
 }
 
 @media only screen and (max-width: 560px) {
-    html { font-size: 32.5%; }
+    html { font-size: 44.5%; }
+    .select-teams > input { padding: .0rem 0; }
+
 }
 
 @media only screen and (max-width: 520px) {
-    html { font-size: 30.5%; }
+    html { font-size: 40.5%; }
 }
 
 @media only screen and (max-width: 500px) {
-    html { font-size: 29.5%; }
+    html { font-size: 38.5%; }
+    #team-local, #team-visitor { padding: 1rem 0; }
+    .select-teams > input { padding: .1rem 0; }
 }
 
 @media only screen and (max-width: 450px) {
-    html { font-size: 26.5%; }
+    html { font-size: 35.5%; }
+
 }
