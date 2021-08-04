@@ -1,0 +1,105 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --main-color: #353B48;
+    --white: #fff;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.8rem;
+    color: #ccc;
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(to right, rgba(255, 0, 0, 0.9), rgba(0, 0, 255, 0.9));
+}
+
+.main-container {
+    width: 50%;
+    margin: 12rem 0 0 25%;
+    padding: 5rem 0 5rem 7rem;
+    border: 2px solid #ccc;
+    border-radius: 5%;
+    box-shadow: 5px 5px 5rem #333;
+}
+
+table tr td {
+    font-size: 1.5rem;
+    padding: 0 1rem;
+    margin: 0 1rem;
+    border-bottom: 1px solid #ccc;
+    text-shadow: 2px 2px 5px #333;
+}
+
+.select-teams {
+    margin-top: 2rem;
+    padding-left: 5rem;
+}
+
+.select-teams > select {
+    background: transparent;
+    padding: .4rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #ccc;
+    text-shadow: 2px 2px 5px #333;
+}
+
+.select-teams > select option {
+    background: #333;
+    color: #ccc;
+}
+
+.select-teams > input {
+    width: 5rem;
+    padding: .2rem 0;
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius: 5%;
+    color: #ccc;
+    text-align: center;
+}
+
+input:focus {
+    outline: none;
+}
+
+#team-local, #team-visitor {
+    font-size: 1.2rem;
+    width: 30%;
+    text-align: center;
+    cursor: pointer;
+}
+
+.buttons {
+    width: 25%;
+    margin: 1.8rem 0 0 33%;
+}
+
+#btn-play {
+    width: 100%;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid #ccc;
+    padding: .5rem .3rem;
+    border-radius: 5%;
+    color: #ccc;
+    box-shadow: 2px 2px 5px #333;
+}
+
+/* classes used in js */
+.remove {
+    display: none;
+}
+
+.disable {
+    cursor: unset;
+}

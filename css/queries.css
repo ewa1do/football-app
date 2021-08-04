@@ -1,0 +1,30 @@
+
+@media only screen and (max-width: 1240px) {
+    html { font-size: 56.5%; }
+}
+
+@media only screen and (max-width: 1200px) {
+    html { font-size: 58.5%; }
+}
+
+@media only screen and (max-width: 1024px) {
+    html { font-size: 59.5%; }
+    
+    .main-container { width: 66%; margin: 12rem 0 0 15%; }
+}
+
+@media only screen and (max-width: 992px) {
+    html { font-size: 60.5%; }
+}
+
+@media only screen and (max-width: 960px) {
+    .main-container { padding-left: 6rem; }
+}
+/* 
+breakpoints
+1240
+1200
+1024
+992
+768
+640 */

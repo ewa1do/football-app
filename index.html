@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"> 
+    <link rel='stylesheet' type='text/css' href='css/styles.css'>
+    <link rel='stylesheet' type='text/css' href='css/queries.css'>
+    <title>Football App</title>
+</head>
+
+<body>
+    <main>
+        <div class="main-container">
+            <table class='team--table'>
+                <tr>
+                    <td></td>
+                    <td>Premier League</td>
+                    <td>GP</td>
+                    <td>W</td>
+                    <td>D</td>
+                    <td>L</td>
+                    <td>GF</td>
+                    <td>GA</td>
+                    <td>GD</td>
+                    <td>PTS</td>
+                </tr>
+                <tr class='team teams'>
+                    <td class='position'>1</td>
+                    <td class='team--name'>Team 1</td>
+                    <td class='GP'>0</td>
+                    <td class='W'>0</td>
+                    <td class='D'>0</td>
+                    <td class='L'>0</td>
+                    <td class='GF'>0</td>
+                    <td class='GA'>0</td>
+                    <td class='GD'>0</td>
+                    <td class='PTS'>0</td>
+                </tr>
+            </table>
+            <div class="select-teams">
+                <select name="team-local" id="team-local">
+                    <option value="team">Select Home Team</option>
+                </select>
+                <input type="text" name="local-score" id="local-score">
+                <input type="text" name="visitor-score" id="visitor-score">
+
+                <select name="team-visitor" id="team-visitor">
+                    <option value="team">Select Away Team</option>
+                </select>
+            </div>
+            <div class="buttons">
+                <button id='btn-play'>Match!</button>
+            </div>
+        </div>
+    </main>
+
+
+
+    <script src='js/index.js'></script>
+</body>
+
+
+</html>
