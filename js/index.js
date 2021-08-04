@@ -206,10 +206,20 @@ const compare = function (team1, team2) {
         return 1;
     }
     // if both teams have the same points then sort using the goal difference
-    if (team1.PTS === team2.PTS) {
-        if (team1.GD > team2.GD) return -1;
+    if ((team1.PTS === team2.PTS) && (team1.GD > team2.GD)) {
+        return -1
+    } 
+    
+    if ((team1.PTS === team2.PTS) && (team1.GD < team2.GD)) {
+        return 1
+    } 
+
+    // if both teams have the same points and the same goal difference sort by goals on favor
+    if (team1.GD === team2.GD) {
+        if (team1.GF > team2.GF) return -1;
         else return 1;
     }
+    
     return 0;
 };
 
