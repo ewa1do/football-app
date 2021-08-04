@@ -206,16 +206,25 @@ const compare = function (team1, team2) {
         return 1;
     }
     // if both teams have the same points then sort using the goal difference
-    if (team1.PTS === team2.PTS) {{
+    if (team1.PTS === team2.PTS) {
         if (team1.GD > team2.GD) return -1;
         else return 1;
-    }}
+    }
     return 0;
-}
+};
 
 const hightlightInput = function () {
     this.select();
-}
+};
+
+// this function fix the bug that the teams plays with itself, now the selected team disappears from the other team options
+const removeSelectedTeam = function (event, otherTeam) {
+    if (event.target.value !== 'team') {
+        for (let i = 1; i < otherTeam.children.length; i++) {
+            if (event.target.value === otherTeam.children[i].value) otherTeam.children[i].classList.toggle('remove');
+        }
+    }
+};
 
 const updateStats = function () {
     // Store the teams of the select tag into variables
@@ -251,7 +260,6 @@ const updateStats = function () {
     updateTable();
 };
 
-
 // Function calls
 displayTeams(teams);
 
@@ -260,5 +268,8 @@ selectTeams(visitTeam, teams);
 
 localScore.addEventListener('click', hightlightInput);
 visitScore.addEventListener('click', hightlightInput);
+
+localTeam.addEventListener('click', event => removeSelectedTeam(event, visitTeam));
+visitTeam.addEventListener('click', event => removeSelectedTeam(event, localTeam));
 
 btnPlay.addEventListener('click', updateStats);
