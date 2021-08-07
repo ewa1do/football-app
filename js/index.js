@@ -123,48 +123,7 @@ const teams = [
     },
 ];
 
-const matches = [
-    {
-        match: 1,
-        local: '',
-        localScore: 0,
-        visitor: '',
-        visitorScore: 0,
-        result: [],
-    },
-    {
-        match: 2,
-        local: '',
-        localScore: 0,
-        visitor: '',
-        visitorScore: 0,
-        result: [],
-    },
-    {
-        match: 3,
-        local: '',
-        localScore: 0,
-        visitor: '',
-        visitorScore: 0,
-        result: [],
-    },
-    {
-        match: 4,
-        local: '',
-        localScore: 0,
-        visitor: '',
-        visitorScore: 0,
-        result: [],
-    },
-    {
-        match: 5,
-        local: '',
-        localScore: 0,
-        visitor: '',
-        visitorScore: 0,
-        result: [],
-    },
-];
+const matches = [];
 
 
 // variables for the table
@@ -182,6 +141,7 @@ const btnPlay = document.querySelector('#btn-play');
 
 // variables for the weeks feature
 
+const weekContainer = document.querySelector('.week-container');
 const selectWeek = document.querySelector('#select-weeks');
 const weekBtn = document.querySelector('#display-week');
 
@@ -190,6 +150,7 @@ const weekBtn = document.querySelector('#display-week');
 
 localScore.value = 0;
 visitScore.value = 0;
+selectWeek.value = 1; 
 
 // Display the teams table
 const displayTeams = function (arr) {
@@ -351,28 +312,80 @@ btnPlay.addEventListener('click', updateStats);
 
 // Get randoms teams
 
-// returns a random number and update the arr without the number returned
-const removeRandomNum = function (arr) {
+// returns a random index of the array and update the arr without the index returned
+const removeRandomIndex = function (arr) {
     const randomNum = Math.trunc(Math.random() * arr.length);
     const match = arr.splice(randomNum, 1);
     return match[0];
 }
-// console.log(arrTeam);
 
+const randomScore = () => Math.trunc(Math.random() * 6);
 
-weekBtn.addEventListener('click', function (event) {
-    const arrTeam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const winnerStatsWeek = function (winner, winnerScore, loserScore) {
+    winner.W += 1;
+    winner.PTS += 3;
+    winner.GF += winnerScore;
+    winner.GA += loserScore;
+    winner.GD = winnerScore - loserScore;
+}
 
-    // 
-    for (const match of matches) {
-        match.local = removeRandomNum(arrTeam);
-        match.visitor = removeRandomNum(arrTeam);
-    }
+const loserStatsWeek = function (loser, winnerScore, loserScore) {
+    loser.L += 1;
+    loser.GF += loserScore;
+    loser.GA += winnerScore;
+    loser.GD = loserScore - winnerScore;
+}
 
+const drawStatsWeek = function (draw, teamScore, otherTeamScore) {
+    draw.D++;
+    draw.GF += teamScore;
+    draw.GA += otherTeamScore;
+    draw.GD = teamScore - otherTeamScore;
+    draw.PTS++;
+}
 
-    // matches.forEach(match => console.log(match));
+const stringToNumber = string => Number(string);
 
-    for (let i = 0; i < teams.length; i++) {
+const weekStats = function () {
+const teamsArr = teams.map(team => team.name);
+    for (let i = 0; i < 5; i++) {
+        matches.push({
+            match: i + 1,
+            local: removeRandomIndex(teamsArr),
+            visitor: removeRandomIndex(teamsArr),
+            localScore: randomScore(),
+            visitorScore: randomScore(),
+        });
+
+        const homeTeam = teams.filter(team => team.name === matches[i].local)[0];
+        const awayTeam = teams.filter(team => team.name === matches[i].visitor)[0];
+        const { localScore, visitorScore } = matches[i];
+
+        homeTeam.GP++;
+        awayTeam.GP++;
         
+        if (localScore > visitorScore) {
+            winnerStatsWeek(homeTeam, localScore, visitorScore);
+            loserStatsWeek(awayTeam, localScore, visitorScore);
+        } else if (localScore === visitorScore) {
+            drawStatsWeek(homeTeam, localScore, visitorScore);
+            drawStatsWeek(awayTeam, visitorScore, localScore);
+        } else {
+            winnerStatsWeek(awayTeam, visitorScore, localScore);
+            loserStatsWeek(homeTeam, visitorScore, localScore);
+        }
+        
+        const output = 
+        `
+        <div class='match>
+            <span class='local-visitor'>${matches[i].local} ${matches[i].localScore} - ${matches[i].visitorScore} ${matches[i].visitor} </span>
+        </div>
+        `;
+
+        teams.sort(compare);
+        updateTable();
+        weekContainer.insertAdjacentHTML('beforebegin', output);
     }
-});
+};
+
+weekBtn.addEventListener('click', weekStats);
