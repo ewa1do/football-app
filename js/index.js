@@ -11,6 +11,7 @@ const teams = [
         GA: 0,
         GD: 0,
         PTS: 0,
+        ID: 1,
     },
     {
         name: 'Manchester City',
@@ -22,6 +23,7 @@ const teams = [
         GA: 0,
         GD: 0,
         PTS: 0,
+        ID: 2,
     },
     {
         name: 'Liverpool FC',
@@ -33,6 +35,7 @@ const teams = [
         GA: 0,
         GD: 0,
         PTS: 0,
+        ID: 3,
     },
     {
         name: 'Chelsea FC',
@@ -44,6 +47,7 @@ const teams = [
         GA: 0,
         GD: 0,
         PTS: 0,
+        ID: 4,
     },
     {
         name: 'Arsenal FC',
@@ -55,6 +59,7 @@ const teams = [
         GA: 0,
         GD: 0,
         PTS: 0,
+        ID: 5,
     },
     {
         name: 'Everton FC',
@@ -66,6 +71,7 @@ const teams = [
         GA: 0,
         GD: 0,
         PTS: 0,
+        ID: 6,
     },
     {
         name: 'West Ham United',
@@ -77,6 +83,7 @@ const teams = [
         GA: 0,
         GD: 0,
         PTS: 0,
+        ID: 7,
     },
     {
         name: 'Leicester City',
@@ -88,6 +95,7 @@ const teams = [
         GA: 0,
         GD: 0,
         PTS: 0,
+        ID: 8,
     },
     {
         name: 'Tottenham Hotspur',
@@ -99,6 +107,7 @@ const teams = [
         GA: 0,
         GD: 0,
         PTS: 0,
+        ID: 9,
     },
     {
         name: 'Watford FC',
@@ -110,9 +119,55 @@ const teams = [
         GA: 0,
         GD: 0,
         PTS: 0,
+        ID: 10,
     },
 ];
 
+const matches = [
+    {
+        match: 1,
+        local: '',
+        localScore: 0,
+        visitor: '',
+        visitorScore: 0,
+        result: [],
+    },
+    {
+        match: 2,
+        local: '',
+        localScore: 0,
+        visitor: '',
+        visitorScore: 0,
+        result: [],
+    },
+    {
+        match: 3,
+        local: '',
+        localScore: 0,
+        visitor: '',
+        visitorScore: 0,
+        result: [],
+    },
+    {
+        match: 4,
+        local: '',
+        localScore: 0,
+        visitor: '',
+        visitorScore: 0,
+        result: [],
+    },
+    {
+        match: 5,
+        local: '',
+        localScore: 0,
+        visitor: '',
+        visitorScore: 0,
+        result: [],
+    },
+];
+
+
+// variables for the table
 
 const teamTable = document.querySelector('.team--table');
 const teamEl = document.querySelector('.team');
@@ -124,6 +179,14 @@ const localScore = document.querySelector('#local-score');
 const visitScore = document.querySelector('#visitor-score');
 
 const btnPlay = document.querySelector('#btn-play');
+
+// variables for the weeks feature
+
+const selectWeek = document.querySelector('#select-weeks');
+const weekBtn = document.querySelector('#display-week');
+
+// console.log(selectWeek);
+// console.log(weekBtn)
 
 localScore.value = 0;
 visitScore.value = 0;
@@ -283,3 +346,33 @@ localTeam.addEventListener('click', event => removeSelectedTeam(event, visitTeam
 visitTeam.addEventListener('click', event => removeSelectedTeam(event, localTeam));
 
 btnPlay.addEventListener('click', updateStats);
+
+// weeks features
+
+// Get randoms teams
+
+// returns a random number and update the arr without the number returned
+const removeRandomNum = function (arr) {
+    const randomNum = Math.trunc(Math.random() * arr.length);
+    const match = arr.splice(randomNum, 1);
+    return match[0];
+}
+// console.log(arrTeam);
+
+
+weekBtn.addEventListener('click', function (event) {
+    const arrTeam = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+    // 
+    for (const match of matches) {
+        match.local = removeRandomNum(arrTeam);
+        match.visitor = removeRandomNum(arrTeam);
+    }
+
+
+    // matches.forEach(match => console.log(match));
+
+    for (let i = 0; i < teams.length; i++) {
+        
+    }
+});
