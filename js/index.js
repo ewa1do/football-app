@@ -326,65 +326,81 @@ const winnerStatsWeek = function (winner, winnerScore, loserScore) {
     winner.PTS += 3;
     winner.GF += winnerScore;
     winner.GA += loserScore;
-    winner.GD = winnerScore - loserScore;
+    winner.GD = winner.GF - winner.GA;
 }
 
 const loserStatsWeek = function (loser, winnerScore, loserScore) {
     loser.L += 1;
     loser.GF += loserScore;
     loser.GA += winnerScore;
-    loser.GD = loserScore - winnerScore;
+    loser.GD = loser.GF - loser.GA;
 }
 
 const drawStatsWeek = function (draw, teamScore, otherTeamScore) {
     draw.D++;
     draw.GF += teamScore;
     draw.GA += otherTeamScore;
-    draw.GD = teamScore - otherTeamScore;
+    draw.GD = draw.GF - draw.GA;
     draw.PTS++;
 }
 
 const stringToNumber = string => Number(string);
 
 const weekStats = function () {
-const teamsArr = teams.map(team => team.name);
-    for (let i = 0; i < 5; i++) {
-        matches.push({
-            match: i + 1,
-            local: removeRandomIndex(teamsArr),
-            visitor: removeRandomIndex(teamsArr),
-            localScore: randomScore(),
-            visitorScore: randomScore(),
-        });
-
-        const homeTeam = teams.filter(team => team.name === matches[i].local)[0];
-        const awayTeam = teams.filter(team => team.name === matches[i].visitor)[0];
-        const { localScore, visitorScore } = matches[i];
-
-        homeTeam.GP++;
-        awayTeam.GP++;
-        
-        if (localScore > visitorScore) {
-            winnerStatsWeek(homeTeam, localScore, visitorScore);
-            loserStatsWeek(awayTeam, localScore, visitorScore);
-        } else if (localScore === visitorScore) {
-            drawStatsWeek(homeTeam, localScore, visitorScore);
-            drawStatsWeek(awayTeam, visitorScore, localScore);
-        } else {
-            winnerStatsWeek(awayTeam, visitorScore, localScore);
-            loserStatsWeek(homeTeam, visitorScore, localScore);
-        }
-        
-        const output = 
-        `
-        <div class='match>
-            <span class='local-visitor'>${matches[i].local} ${matches[i].localScore} - ${matches[i].visitorScore} ${matches[i].visitor} </span>
-        </div>
-        `;
-
-        teams.sort(compare);
-        updateTable();
-        weekContainer.insertAdjacentHTML('beforebegin', output);
+    const week = stringToNumber(selectWeek.value);
+    for (let i = 0; i < week; i++) {
+        const teamsArr = teams.map(team => team.name);
+        weekContainer.insertAdjacentHTML('beforebegin', `<h3>Week ${i + 1} </h3>`);
+        for (let i = 0; i < 5; i++) {
+            matches.push({
+                match: i + 1,
+                // local: removeRandomIndex(teamsArr),
+                // visitor: removeRandomIndex(teamsArr),
+                // localScore: randomScore(),
+                // visitorScore: randomScore(),
+            });
+    
+            matches[i].local = removeRandomIndex(teamsArr);
+            matches[i].visitor = removeRandomIndex(teamsArr);
+            matches[i].localScore = randomScore();
+            matches[i].visitorScore = randomScore();
+    
+    
+            const homeTeam = teams.filter(team => team.name === matches[i].local)[0];
+            const awayTeam = teams.filter(team => team.name === matches[i].visitor)[0];
+            const { localScore, visitorScore } = matches[i];
+    
+            homeTeam.GP++;
+            awayTeam.GP++;
+            
+            if (localScore > visitorScore) {
+                winnerStatsWeek(homeTeam, localScore, visitorScore);
+                loserStatsWeek(awayTeam, localScore, visitorScore);
+            } else if (localScore === visitorScore) {
+                drawStatsWeek(homeTeam, localScore, visitorScore);
+                drawStatsWeek(awayTeam, visitorScore, localScore);
+            } else {
+                winnerStatsWeek(awayTeam, visitorScore, localScore);
+                loserStatsWeek(homeTeam, visitorScore, localScore);
+            }
+            
+            const output = 
+            `
+            <div class='match>
+                <span class='local-visitor'>${matches[i].local} ${matches[i].localScore} - ${matches[i].visitorScore} ${matches[i].visitor} </span>
+            </div>
+            <br>
+            `;
+    
+            teams.sort(compare);
+            updateTable();
+            weekContainer.insertAdjacentHTML('beforebegin', output);
+    
+            matches[i].local = 0;
+            matches[i].visitor = 0;
+            matches[i].localScore = 0;
+            matches[i].visitorScore = 0;
+        } 
     }
 };
 
