@@ -123,8 +123,8 @@ const teams = [
     },
 ];
 
+// Array i'm gonna use to store the matches obj
 const matches = [];
-
 
 // variables for the table
 
@@ -141,17 +141,15 @@ const btnPlay = document.querySelector('#btn-play');
 
 // variables for the weeks feature
 
-const weekContainer = document.querySelector('.week-container');
 const selectWeek = document.querySelector('#select-weeks');
 const weekBtn = document.querySelector('#display-week');
-
-// console.log(selectWeek);
-// console.log(weekBtn)
+const matchesDiv = document.querySelector('.matches');
 
 localScore.value = 0;
 visitScore.value = 0;
 selectWeek.value = 1; 
 
+///////////TABLE COMPONENT//////////////////
 // Display the teams table
 const displayTeams = function (arr) {
 
@@ -294,24 +292,9 @@ const updateStats = function () {
     updateTable();
 };
 
-// Function calls
-displayTeams(teams);
-
-selectTeams(localTeam, teams);
-selectTeams(visitTeam, teams);
-
-localScore.addEventListener('click', hightlightInput);
-visitScore.addEventListener('click', hightlightInput);
-
-localTeam.addEventListener('click', event => removeSelectedTeam(event, visitTeam));
-visitTeam.addEventListener('click', event => removeSelectedTeam(event, localTeam));
-
-btnPlay.addEventListener('click', updateStats);
-
-// weeks features
+////////////WEEKS COMPONENT////////////////////
 
 // Get randoms teams
-
 // returns a random index of the array and update the arr without the index returned
 const removeRandomIndex = function (arr) {
     const randomNum = Math.trunc(Math.random() * arr.length);
@@ -319,6 +302,7 @@ const removeRandomIndex = function (arr) {
     return match[0];
 }
 
+// returns a random score between 0 and 5
 const randomScore = () => Math.trunc(Math.random() * 6);
 
 const winnerStatsWeek = function (winner, winnerScore, loserScore) {
@@ -327,14 +311,14 @@ const winnerStatsWeek = function (winner, winnerScore, loserScore) {
     winner.GF += winnerScore;
     winner.GA += loserScore;
     winner.GD = winner.GF - winner.GA;
-}
+};
 
 const loserStatsWeek = function (loser, winnerScore, loserScore) {
     loser.L += 1;
     loser.GF += loserScore;
     loser.GA += winnerScore;
     loser.GD = loser.GF - loser.GA;
-}
+};
 
 const drawStatsWeek = function (draw, teamScore, otherTeamScore) {
     draw.D++;
@@ -342,29 +326,44 @@ const drawStatsWeek = function (draw, teamScore, otherTeamScore) {
     draw.GA += otherTeamScore;
     draw.GD = draw.GF - draw.GA;
     draw.PTS++;
-}
+};
 
 const stringToNumber = string => Number(string);
 
+// function that shows the matches organized by weeks 
+const displayAccordion = function () {
+    const accordion = document.querySelectorAll('.accordion');
+    
+    for (const accord of accordion) {
+        accord.addEventListener('click', function () {
+            this.classList.toggle('active');
+            const accordShow = this.nextElementSibling.children;
+            for (const element of accordShow) element.classList.toggle('remove');
+        });
+    }
+};
+
 const weekStats = function () {
     const week = stringToNumber(selectWeek.value);
+    const saveMatch = `<div class='match-list'></div>`
+
     for (let i = 0; i < week; i++) {
+
+        matchesDiv.insertAdjacentHTML('afterbegin', saveMatch); 
         const teamsArr = teams.map(team => team.name);
-        weekContainer.insertAdjacentHTML('beforebegin', `<h3>Week ${i + 1} </h3>`);
+        
+        const accordDiv = `<div class='accordion'><span>Week ${i + 1}</span></div>`
+        matchesDiv.insertAdjacentHTML('afterbegin', accordDiv);
+        
         for (let i = 0; i < 5; i++) {
             matches.push({
                 match: i + 1,
-                // local: removeRandomIndex(teamsArr),
-                // visitor: removeRandomIndex(teamsArr),
-                // localScore: randomScore(),
-                // visitorScore: randomScore(),
             });
     
             matches[i].local = removeRandomIndex(teamsArr);
             matches[i].visitor = removeRandomIndex(teamsArr);
             matches[i].localScore = randomScore();
             matches[i].visitorScore = randomScore();
-    
     
             const homeTeam = teams.filter(team => team.name === matches[i].local)[0];
             const awayTeam = teams.filter(team => team.name === matches[i].visitor)[0];
@@ -386,15 +385,16 @@ const weekStats = function () {
             
             const output = 
             `
-            <div class='match>
+            <div class='match remove'>
                 <span class='local-visitor'>${matches[i].local} ${matches[i].localScore} - ${matches[i].visitorScore} ${matches[i].visitor} </span>
             </div>
-            <br>
             `;
     
             teams.sort(compare);
+
             updateTable();
-            weekContainer.insertAdjacentHTML('beforebegin', output);
+            
+            document.querySelector('.match-list').insertAdjacentHTML('beforeend', output);
     
             matches[i].local = 0;
             matches[i].visitor = 0;
@@ -402,6 +402,24 @@ const weekStats = function () {
             matches[i].visitorScore = 0;
         } 
     }
+
+    displayAccordion();
+
 };
 
+// Function calls
+displayTeams(teams);
+
+selectTeams(localTeam, teams);
+selectTeams(visitTeam, teams);
+
+localScore.addEventListener('click', hightlightInput);
+visitScore.addEventListener('click', hightlightInput);
+
+localTeam.addEventListener('click', event => removeSelectedTeam(event, visitTeam));
+visitTeam.addEventListener('click', event => removeSelectedTeam(event, localTeam));
+
+btnPlay.addEventListener('click', updateStats);
+
+selectWeek.addEventListener('click', hightlightInput);
 weekBtn.addEventListener('click', weekStats);
