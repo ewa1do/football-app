@@ -338,7 +338,10 @@ const displayAccordion = function () {
         accord.addEventListener('click', function () {
             this.classList.toggle('active');
             const accordShow = this.nextElementSibling.children;
-            for (const element of accordShow) element.classList.toggle('remove');
+            for (const element of accordShow) {
+                element.classList.toggle('remove');
+                element.classList.toggle('slide-in');
+            }
         });
     }
 };
