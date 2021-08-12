@@ -168,16 +168,21 @@ input[type=number] {
 }
 
 /* classes used in js */
-.remove {
-    display: none;
-}
 
 .disable {
     cursor: unset;
 }
 
-.matches > .match-list .match span {
+.remove {
+    display: none;
+}
+
+.matches > .match-list .match {
     padding: 0 18px;
+    overflow: hidden;
+}
+
+.match-list .match {
     overflow: hidden;
 }
 

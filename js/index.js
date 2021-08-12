@@ -333,17 +333,17 @@ const stringToNumber = string => Number(string);
 // function that shows the matches organized by weeks 
 const displayAccordion = function () {
     const accordion = document.querySelectorAll('.accordion');
-    
-    for (const accord of accordion) {
-        accord.addEventListener('click', function () {
+
+    accordion.forEach(function (accord, i) {
+        accord.addEventListener('click', function (e) {
             this.classList.toggle('active');
-            const accordShow = this.nextElementSibling.children;
-            for (const element of accordShow) {
-                element.classList.toggle('remove');
-                element.classList.toggle('slide-in');
+            const accordDisplay = this.nextElementSibling.children;
+            for (const acc of accordDisplay) {
+                acc.classList.toggle('remove');
+                acc.classList.toggle('slide-in');
             }
         });
-    }
+    });
 };
 
 const weekStats = function () {
@@ -426,3 +426,5 @@ btnPlay.addEventListener('click', updateStats);
 
 selectWeek.addEventListener('click', hightlightInput);
 weekBtn.addEventListener('click', weekStats);
+
+// matchesDiv.addEventListener('click', closeAccordion);
