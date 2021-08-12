@@ -123,3 +123,21 @@
     html { font-size: 35.5%; }
 
 }
+
+@media only screen and (max-width: 400px) {
+    html { font-size: 32.5%; }
+    .accordion { width: 45%; }
+    #btn-play { font-size: 2rem; }
+    #display-week { padding: 1rem; }
+    .accordion { width: 45%; }
+    .match-list { margin-left: -4rem; }
+}
+
+@media only screen and (max-width: 350px) {
+    html { font-size: 36.5%; }
+    
+    .main-container { width: 70%; }
+    .week-container { margin: 8rem 0 0 18rem; }
+    .accordion { width: 59%; }
+    .match-list { margin-left: -4rem; }
+}
