@@ -1,126 +1,17 @@
 'use strict';
 
-const teams = [
-    {
-        name: 'Manchester United',
-        GP: '0',
-        W: 0,
-        D: 0,
-        L: 0,
-        GF: 0,
-        GA: 0,
-        GD: 0,
-        PTS: 0,
-        ID: 1,
-    },
-    {
-        name: 'Manchester City',
-        GP: 0,
-        W: 0,
-        D: 0,
-        L: 0,
-        GF: 0,
-        GA: 0,
-        GD: 0,
-        PTS: 0,
-        ID: 2,
-    },
-    {
-        name: 'Liverpool FC',
-        GP: 0,
-        W: 0,
-        D: 0,
-        L: 0,
-        GF: 0,
-        GA: 0,
-        GD: 0,
-        PTS: 0,
-        ID: 3,
-    },
-    {
-        name: 'Chelsea FC',
-        GP: 0,
-        W: 0,
-        D: 0,
-        L: 0,
-        GF: 0,
-        GA: 0,
-        GD: 0,
-        PTS: 0,
-        ID: 4,
-    },
-    {
-        name: 'Arsenal FC',
-        GP: 0,
-        W: 0,
-        D: 0,
-        L: 0,
-        GF: 0,
-        GA: 0,
-        GD: 0,
-        PTS: 0,
-        ID: 5,
-    },
-    {
-        name: 'Everton FC',
-        GP: 0,
-        W: 0,
-        D: 0,
-        L: 0,
-        GF: 0,
-        GA: 0,
-        GD: 0,
-        PTS: 0,
-        ID: 6,
-    },
-    {
-        name: 'West Ham United',
-        GP: 0,
-        W: 0,
-        D: 0,
-        L: 0,
-        GF: 0,
-        GA: 0,
-        GD: 0,
-        PTS: 0,
-        ID: 7,
-    },
-    {
-        name: 'Leicester City',
-        GP: 0,
-        W: 0,
-        D: 0,
-        L: 0,
-        GF: 0,
-        GA: 0,
-        GD: 0,
-        PTS: 0,
-        ID: 8,
-    },
-    {
-        name: 'Tottenham Hotspur',
-        GP: 0,
-        W: 0,
-        D: 0,
-        L: 0,
-        GF: 0,
-        GA: 0,
-        GD: 0,
-        PTS: 0,
-        ID: 9,
-    },
-    {
-        name: 'Watford FC',
-        GP: 0,
-        W: 0,
-        D: 0,
-        L: 0,
-        GF: 0,
-        GA: 0,
-        GD: 0,
-        PTS: 0,
-        ID: 10,
-    },
+// fake database which i'm use to receive the data
+const teamsDB = [
+    { name: 'Manchester United', },
+    { name: 'Manchester City', },
+    { name: 'Liverpool FC', },
+    { name: 'Chelsea FC', },
+    { name: 'Arsenal FC', },
+    { name: 'Everton FC', },
+    { name: 'West Ham United', },
+    { name: 'Leicester City', },
+    { name: 'Tottenham Hotspur', },
+    { name: 'Watford FC', },
 ];
 
 // Array i'm gonna use to store the matches obj
@@ -149,119 +40,184 @@ localScore.value = 0;
 visitScore.value = 0;
 selectWeek.value = 1; 
 
-///////////TABLE COMPONENT//////////////////
-// Display the teams table
-const displayTeams = function (arr) {
 
-    // remove the existent <tr> of the html
-    document.querySelector('.team').classList.add('remove');
+class Team {
 
-    for (const [i, obj] of arr.entries()) {
-        const output = `
-        <tr class='team'>
-            <td class='position'>${i + 1}</td>
-            <td class='team--name'>${obj.name}</td>
-            <td class='GP'>${obj.GP}</td>
-            <td class='W'>${obj.W}</td>
-            <td class='D'>${obj.D}</td>
-            <td class='L'>${obj.L}</td>
-            <td class='GF'>${obj.GF}</td>
-            <td class='GA'>${obj.GA}</td>
-            <td class='GD'>${obj.GD}</td>
-            <td class='PTS'>${obj.PTS}</td>
-        </tr>
-        `;
-
-        teamTable.insertAdjacentHTML('beforeend', output);
+    constructor (GP, W, D, L, GF, GA, GD, PTS, ID) {
+        this.GP = GP;
+        this.W = W;
+        this.D = D;
+        this.L = L;
+        this.GF = GF;
+        this.GA = GA;
+        this.GD = GD;
+        this.PTS = PTS;
+        this.ID = ID;
     }
-    
-};
 
-// Display the teams select
-const selectTeams = function (element, arr) {
-    for (const obj of arr) {
-        const option = `<option value="${obj.name}">${obj.name}</option>`;
-        element.insertAdjacentHTML('beforeend', option);
+    static setTeams (db) {
+        db.forEach((team, i) => {
+            team.GP = 0;
+            team.W = 0;
+            team.D = 0;
+            team.L = 0;
+            team.GF = 0;
+            team.GA = 0;
+            team.GD = 0;
+            team.PTS = 0;
+            team.ID = i + 1;
+        });
     }
-};
 
-const addGamePlayed = team => team.map(obj => obj.GP++);
-
-const winnerStats = function (winner, winnerScore, loserScore) {
-    winner.map(team => team.W++);
-    winner.map(team => team.GF += winnerScore);
-    winner.map(team => team.GA += loserScore);
-    winner.map(team => team.GD = team.GF - team.GA);
-    winner.map(team => team.PTS += 3);
-};
-
-const loserStats = function (loser, winnerScore, loserScore) {
-    loser.map(team => team.L++);
-    loser.map(team => team.GF += loserScore);
-    loser.map(team => team.GA += winnerScore);
-    loser.map(team => team.GD = team.GF - team.GA);
-};
-
-const drawStats = function (draw, teamScore, otherTeamScore) {
-    draw.map(team => team.D++);
-    draw.map(team => team.GF += teamScore);
-    draw.map(team => team.GA += otherTeamScore);
-    draw.map(team => team.GD = team.GF - team.GA);
-    draw.map(team => team.PTS++);
-};
-
-const updateTable = function () {
-    // Remove existent table
-    for (let i = 1; i < teamTable.children.length; i++) 
-        teamTable.children[i].classList.add('remove');
-    
-    // Updating new table
-    displayTeams(teams);
-};
-
-// callback function to use into the sort method
-const compare = function (team1, team2) {
-    if (team1.PTS > team2.PTS) {
-        return -1;
-    }
-    if (team1.PTS < team2.PTS) {
-        return 1;
-    }
-    // if both teams have the same points then sort using the goal difference
-    if ((team1.PTS === team2.PTS) && (team1.GD > team2.GD)) {
-        return -1
-    } 
-    
-    if ((team1.PTS === team2.PTS) && (team1.GD < team2.GD)) {
-        return 1
+    static addGamePlayed (team) {
+        team.GP++;
     } 
 
-    // if both teams have the same points and the same goal difference sort by goals on favor
-    if (team1.GD === team2.GD) {
-        if (team1.GF > team2.GF) return -1;
-        else return 1;
-    }
+    static winnerStats (winner, winnerScore, loserScore) {
+        winner.W += 1;
+        winner.PTS += 3;
+        winner.GF += winnerScore;
+        winner.GA += loserScore;
+        winner.GD = winner.GF - winner.GA;
+    };
     
-    return 0;
-};
+    static loserStats (loser, winnerScore, loserScore) {
+        loser.L += 1;
+        loser.GF += loserScore;
+        loser.GA += winnerScore;
+        loser.GD = loser.GF - loser.GA;
+    };
+    
+    static drawStats (team, teamScore, otherTeamScore) {
+        team.D++;
+        team.GF += teamScore;
+        team.GA += otherTeamScore;
+        team.GD = team.GF - team.GA;
+        team.PTS++;
+    };
 
-const hightlightInput = function () {
-    this.select();
-};
+    // callback function to use into the sort method
+    static compareTeams (team1, team2) {
+        if (team1.PTS > team2.PTS) {
+            return -1;
+        }
+        if (team1.PTS < team2.PTS) {
+            return 1;
+        }
+        // if both teams have the same points then sort using the goal difference
+        if ((team1.PTS === team2.PTS) && (team1.GD > team2.GD)) {
+            return -1
+        } 
+        
+        if ((team1.PTS === team2.PTS) && (team1.GD < team2.GD)) {
+            return 1
+        } 
+    
+        // if both teams have the same points and the same goal difference sort by goals on favor
+        if (team1.GD === team2.GD) {
+            if (team1.GF > team2.GF) return -1;
+            else return 1;
+        }
+        
+        return 0;
+    };
+    
+}
 
-// this function fix the bug that the teams plays with itself, now the selected team disappears from the other team options
-const removeSelectedTeam = function (event, otherTeam) {
-    if (event.target.value !== 'team') {
-        for (let i = 1; i < otherTeam.children.length; i++) {
-            if (event.target.value === otherTeam.children[i].value) otherTeam.children[i].classList.toggle('remove');
+
+class UI {
+
+    static displayTeamsTable (arr) {
+        // remove the existent <tr> of the html
+        document.querySelector('.team').classList.add('remove');
+
+        for (const [i, obj] of arr.entries()) {
+            const output = `
+            <tr class='team'>
+                <td class='position'>${i + 1}</td>
+                <td class='team--name'>${obj.name}</td>
+                <td class='GP'>${obj.GP}</td>
+                <td class='W'>${obj.W}</td>
+                <td class='D'>${obj.D}</td>
+                <td class='L'>${obj.L}</td>
+                <td class='GF'>${obj.GF}</td>
+                <td class='GA'>${obj.GA}</td>
+                <td class='GD'>${obj.GD}</td>
+                <td class='PTS'>${obj.PTS}</td>
+            </tr>
+            `;
+            teamTable.insertAdjacentHTML('beforeend', output);
         }
     }
-};
+
+    static updateTeamsTable () {
+        // Remove existent table
+        for (let i = 1; i < teamTable.children.length; i++) {
+            teamTable.children[i].classList.add('remove');
+        }
+
+        // Display new table
+        UI.displayTeamsTable(teamsDB);
+    }
+
+    static displayTeamsSelect (element, arr) {
+        arr.forEach((obj) => {
+            const option =  `<option value="${obj.name}">${obj.name}</option>`;
+            element.insertAdjacentHTML('beforeend', option);
+        });
+    }
+
+    // this function fix the bug that the teams plays with itself, now the selected team disappears from the other team options
+    static removeSelectedTeam (e, otherTeam) {
+        if (e.target.value !== 'team') {
+            for (const team of otherTeam.children) {
+                if (e.target.value === team.value) team.classList.toggle('remove');
+            }
+        }
+    }
+
+    static highlightInput () {
+        this.select();
+    }
+
+    // function that shows the matches organized by weeks 
+    static displayWeeksAccordion () {
+        const accordion = document.querySelectorAll('.accordion');
+    
+        accordion.forEach(function (accord, i) {
+            accord.addEventListener('click', function (e) {
+                this.classList.toggle('active');
+                const accordDisplay = this.nextElementSibling.children;
+                for (const acc of accordDisplay) {
+                    acc.classList.toggle('remove');
+                    // acc.classList.toggle('slide-in');
+                }
+            });
+        });
+    };
+
+}
+
+class Match {
+    
+    // returns a random index of the array and update the arr without the index returned
+    static removeRandomIndex = function (arr) {
+        const randomNum = Math.trunc(Math.random() * arr.length);
+        const match = arr.splice(randomNum, 1);
+        return match[0];
+    }
+
+    // returns a random score between 0 and 5
+    static randomScore () { 
+        return Math.trunc(Math.random() * 6);
+    }
+
+}
 
 const updateStats = function () {
     // Store the teams of the select tag into variables
-    const homeTeam = teams.filter(team => team.name === localTeam.value);
-    const awayTeam = teams.filter(team => team.name === visitTeam.value);
+    const homeTeam = teamsDB.filter(team => team.name === localTeam.value)[0];
+    const awayTeam = teamsDB.filter(team => team.name === visitTeam.value)[0];
 
     // Store the score of the inputs
     const homeScore = Number(Math.abs(localScore.value));
@@ -269,82 +225,29 @@ const updateStats = function () {
 
     if (!isNaN(homeScore) && !isNaN(awayScore)) {
         // Adding +1 game played for both teams
-        addGamePlayed(homeTeam);
-        addGamePlayed(awayTeam);
-        
-        // Defining win, draw or lose
-        if (homeScore > awayScore) { 
-            winnerStats(homeTeam, homeScore, awayScore);
-            loserStats(awayTeam, homeScore, awayScore);
+        Team.addGamePlayed(homeTeam);
+        Team.addGamePlayed(awayTeam);
+
+        if (homeScore > awayScore) {
+            Team.winnerStats(homeTeam, homeScore, awayScore);
+            Team.loserStats(awayTeam, homeScore, awayScore);
         } else if (homeScore === awayScore) {
-            drawStats(homeTeam, homeScore, awayScore);
-            drawStats(awayTeam, awayScore, homeScore);
+            Team.drawStats(homeTeam, homeScore, awayScore);
+            Team.drawStats(awayTeam, awayScore, homeScore);
         } else {
-            winnerStats(awayTeam, awayScore, homeScore);
-            loserStats(homeTeam, awayScore, homeScore);
+            Team.winnerStats(awayTeam, awayScore, homeScore);
+            Team.loserStats(homeTeam, awayScore, homeScore);
         }
 
         // sorting the table to display how's leading
-        teams.sort(compare);
+        teamsDB.sort(Team.compareTeams);
     }
 
     // Update the table
-    updateTable();
-};
-
-////////////WEEKS COMPONENT////////////////////
-
-// Get randoms teams
-// returns a random index of the array and update the arr without the index returned
-const removeRandomIndex = function (arr) {
-    const randomNum = Math.trunc(Math.random() * arr.length);
-    const match = arr.splice(randomNum, 1);
-    return match[0];
-}
-
-// returns a random score between 0 and 5
-const randomScore = () => Math.trunc(Math.random() * 6);
-
-const winnerStatsWeek = function (winner, winnerScore, loserScore) {
-    winner.W += 1;
-    winner.PTS += 3;
-    winner.GF += winnerScore;
-    winner.GA += loserScore;
-    winner.GD = winner.GF - winner.GA;
-};
-
-const loserStatsWeek = function (loser, winnerScore, loserScore) {
-    loser.L += 1;
-    loser.GF += loserScore;
-    loser.GA += winnerScore;
-    loser.GD = loser.GF - loser.GA;
-};
-
-const drawStatsWeek = function (draw, teamScore, otherTeamScore) {
-    draw.D++;
-    draw.GF += teamScore;
-    draw.GA += otherTeamScore;
-    draw.GD = draw.GF - draw.GA;
-    draw.PTS++;
+    UI.updateTeamsTable();
 };
 
 const stringToNumber = string => Number(string);
-
-// function that shows the matches organized by weeks 
-const displayAccordion = function () {
-    const accordion = document.querySelectorAll('.accordion');
-
-    accordion.forEach(function (accord, i) {
-        accord.addEventListener('click', function (e) {
-            this.classList.toggle('active');
-            const accordDisplay = this.nextElementSibling.children;
-            for (const acc of accordDisplay) {
-                acc.classList.toggle('remove');
-                acc.classList.toggle('slide-in');
-            }
-        });
-    });
-};
 
 const weekStats = function () {
     const week = stringToNumber(selectWeek.value);
@@ -353,7 +256,7 @@ const weekStats = function () {
     for (let i = 0; i < week; i++) {
 
         matchesDiv.insertAdjacentHTML('afterbegin', saveMatch); 
-        const teamsArr = teams.map(team => team.name);
+        const teamsArr = teamsDB.map(team => team.name);
         
         const accordDiv = `<div class='accordion'><span>Week ${i + 1}</span></div>`
         matchesDiv.insertAdjacentHTML('afterbegin', accordDiv);
@@ -363,27 +266,27 @@ const weekStats = function () {
                 match: i + 1,
             });
     
-            matches[i].local = removeRandomIndex(teamsArr);
-            matches[i].visitor = removeRandomIndex(teamsArr);
-            matches[i].localScore = randomScore();
-            matches[i].visitorScore = randomScore();
+            matches[i].local = Match.removeRandomIndex(teamsArr);
+            matches[i].visitor = Match.removeRandomIndex(teamsArr);
+            matches[i].localScore = Match.randomScore();
+            matches[i].visitorScore = Match.randomScore();
     
-            const homeTeam = teams.filter(team => team.name === matches[i].local)[0];
-            const awayTeam = teams.filter(team => team.name === matches[i].visitor)[0];
+            const homeTeam = teamsDB.filter(team => team.name === matches[i].local)[0];
+            const awayTeam = teamsDB.filter(team => team.name === matches[i].visitor)[0];
             const { localScore, visitorScore } = matches[i];
     
-            homeTeam.GP++;
-            awayTeam.GP++;
-            
+            Team.addGamePlayed(homeTeam);
+            Team.addGamePlayed(awayTeam);
+
             if (localScore > visitorScore) {
-                winnerStatsWeek(homeTeam, localScore, visitorScore);
-                loserStatsWeek(awayTeam, localScore, visitorScore);
+                Team.winnerStats(homeTeam, localScore, visitorScore);
+                Team.loserStats(awayTeam, localScore, visitorScore);
             } else if (localScore === visitorScore) {
-                drawStatsWeek(homeTeam, localScore, visitorScore);
-                drawStatsWeek(awayTeam, visitorScore, localScore);
+                Team.drawStats(homeTeam, localScore, visitorScore);
+                Team.drawStats(awayTeam, visitorScore, localScore);
             } else {
-                winnerStatsWeek(awayTeam, visitorScore, localScore);
-                loserStatsWeek(homeTeam, visitorScore, localScore);
+                Team.winnerStats(awayTeam, visitorScore, localScore);
+                Team.loserStats(homeTeam, visitorScore, localScore);
             }
             
             const output = 
@@ -393,9 +296,10 @@ const weekStats = function () {
             </div>
             `;
     
-            teams.sort(compare);
+            teamsDB.sort(Team.compareTeams);
 
-            updateTable();
+            // updateTable();
+            UI.updateTeamsTable();
             
             document.querySelector('.match-list').insertAdjacentHTML('beforeend', output);
     
@@ -406,25 +310,25 @@ const weekStats = function () {
         } 
     }
 
-    displayAccordion();
-
+    UI.displayWeeksAccordion();
 };
 
 // Function calls
-displayTeams(teams);
+Team.setTeams(teamsDB);
 
-selectTeams(localTeam, teams);
-selectTeams(visitTeam, teams);
+document.addEventListener('DOMContentLoaded', UI.displayTeamsTable(teamsDB));
 
-localScore.addEventListener('click', hightlightInput);
-visitScore.addEventListener('click', hightlightInput);
 
-localTeam.addEventListener('click', event => removeSelectedTeam(event, visitTeam));
-visitTeam.addEventListener('click', event => removeSelectedTeam(event, localTeam));
+UI.displayTeamsSelect(localTeam, teamsDB);
+UI.displayTeamsSelect(visitTeam, teamsDB);
+
+localScore.addEventListener('click', UI.highlightInput);
+visitScore.addEventListener('click', UI.highlightInput);
+
+localTeam.addEventListener('click', event => UI.removeSelectedTeam(event, visitTeam));
+visitTeam.addEventListener('click', event => UI.removeSelectedTeam(event, localTeam));
 
 btnPlay.addEventListener('click', updateStats);
 
-selectWeek.addEventListener('click', hightlightInput);
+selectWeek.addEventListener('click', UI.highlightInput);
 weekBtn.addEventListener('click', weekStats);
-
-// matchesDiv.addEventListener('click', closeAccordion);
