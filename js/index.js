@@ -18,7 +18,6 @@ const teamsDB = [
 const matches = [];
 
 // variables for the table
-
 const teamTable = document.querySelector('.team--table');
 const teamEl = document.querySelector('.team');
 
@@ -31,7 +30,6 @@ const visitScore = document.querySelector('#visitor-score');
 const btnPlay = document.querySelector('#btn-play');
 
 // variables for the weeks feature
-
 const selectWeek = document.querySelector('#select-weeks');
 const weekBtn = document.querySelector('#display-week');
 const matchesDiv = document.querySelector('.matches');
@@ -42,7 +40,6 @@ selectWeek.value = 1;
 
 
 class Team {
-
     constructor (GP, W, D, L, GF, GA, GD, PTS, ID) {
         this.GP = GP;
         this.W = W;
@@ -126,7 +123,6 @@ class Team {
 
 
 class UI {
-
     static displayTeamsTable (arr) {
         // remove the existent <tr> of the html
         document.querySelector('.team').classList.add('remove');
@@ -199,7 +195,6 @@ class UI {
 }
 
 class Match {
-    
     // returns a random index of the array and update the arr without the index returned
     static removeRandomIndex = function (arr) {
         const randomNum = Math.trunc(Math.random() * arr.length);
@@ -210,6 +205,24 @@ class Match {
     // returns a random score between 0 and 5
     static randomScore () { 
         return Math.trunc(Math.random() * 6);
+    }
+
+    // function which makes the game logic of the teams
+    static gameResult (local, visitor, scoreLocal, scoreVisitor) {
+        // Adding +1 game played for both teams
+        Team.addGamePlayed(local);
+        Team.addGamePlayed(visitor);
+
+        if (scoreLocal > scoreVisitor) {
+            Team.winnerStats(local, scoreLocal, scoreVisitor);
+            Team.loserStats(visitor, scoreLocal, scoreVisitor);
+        } else if (scoreLocal === scoreVisitor) {
+            Team.drawStats(local, scoreLocal, scoreVisitor);
+            Team.drawStats(visitor, scoreVisitor, scoreLocal);
+        } else {
+            Team.winnerStats(visitor, scoreVisitor, scoreLocal);
+            Team.loserStats(local, scoreVisitor, scoreLocal);
+        }
     }
 
 }
@@ -224,20 +237,7 @@ const updateStats = function () {
     const awayScore = Number(Math.abs(visitScore.value));
 
     if (!isNaN(homeScore) && !isNaN(awayScore)) {
-        // Adding +1 game played for both teams
-        Team.addGamePlayed(homeTeam);
-        Team.addGamePlayed(awayTeam);
-
-        if (homeScore > awayScore) {
-            Team.winnerStats(homeTeam, homeScore, awayScore);
-            Team.loserStats(awayTeam, homeScore, awayScore);
-        } else if (homeScore === awayScore) {
-            Team.drawStats(homeTeam, homeScore, awayScore);
-            Team.drawStats(awayTeam, awayScore, homeScore);
-        } else {
-            Team.winnerStats(awayTeam, awayScore, homeScore);
-            Team.loserStats(homeTeam, awayScore, homeScore);
-        }
+        Match.gameResult(homeTeam, awayTeam, homeScore, awayScore);
 
         // sorting the table to display how's leading
         teamsDB.sort(Team.compareTeams);
@@ -270,25 +270,13 @@ const weekStats = function () {
             matches[i].visitor = Match.removeRandomIndex(teamsArr);
             matches[i].localScore = Match.randomScore();
             matches[i].visitorScore = Match.randomScore();
-    
+
             const homeTeam = teamsDB.filter(team => team.name === matches[i].local)[0];
             const awayTeam = teamsDB.filter(team => team.name === matches[i].visitor)[0];
             const { localScore, visitorScore } = matches[i];
-    
-            Team.addGamePlayed(homeTeam);
-            Team.addGamePlayed(awayTeam);
 
-            if (localScore > visitorScore) {
-                Team.winnerStats(homeTeam, localScore, visitorScore);
-                Team.loserStats(awayTeam, localScore, visitorScore);
-            } else if (localScore === visitorScore) {
-                Team.drawStats(homeTeam, localScore, visitorScore);
-                Team.drawStats(awayTeam, visitorScore, localScore);
-            } else {
-                Team.winnerStats(awayTeam, visitorScore, localScore);
-                Team.loserStats(homeTeam, visitorScore, localScore);
-            }
-            
+            Match.gameResult(homeTeam, awayTeam, localScore, visitorScore);
+
             const output = 
             `
             <div class='match remove'>
@@ -317,7 +305,6 @@ const weekStats = function () {
 Team.setTeams(teamsDB);
 
 document.addEventListener('DOMContentLoaded', UI.displayTeamsTable(teamsDB));
-
 
 UI.displayTeamsSelect(localTeam, teamsDB);
 UI.displayTeamsSelect(visitTeam, teamsDB);

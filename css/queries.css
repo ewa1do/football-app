@@ -126,6 +126,7 @@
 
 @media only screen and (max-width: 400px) {
     html { font-size: 32.5%; }
+    .main-container { padding: 5rem 0 10rem 6rem; width: 60%; }
     .accordion { width: 45%; }
     #btn-play { font-size: 2rem; }
     #display-week { padding: 1rem; }
@@ -133,10 +134,10 @@
     .match-list { margin-left: -4rem; }
 }
 
-@media only screen and (max-width: 350px) {
+@media only screen and (max-width: 380px) {
     html { font-size: 36.5%; }
     
-    .main-container { width: 70%; }
+    .main-container { width: 70%; padding-left: 5rem; }
     .week-container { margin: 8rem 0 0 18rem; }
     .accordion { width: 59%; }
     .match-list { margin-left: -4rem; }
